@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+       ">
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--<import resource="./xmlConfig/aopConfig.xml"/>-->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property name="maxInMemorySize" value="10000"/>-->
+    <!--</bean>-->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--<property name=""-->
+    <!--</bean>-->
+    <bean id="logAspect" class="com.gr.jiang.common.spring.aspect.LogAspect"/>
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <!--<aop:config proxy-target-class="true">-->
+        <!--<aop:aspect id="dbLogAspect" ref="logAspect">-->
+            <!--<aop:pointcut id="dbLog" expression="execution(* com.gr.jiang.dao.impl.*.*(..))"/>-->
+            <!--<aop:after method="afterHandler" pointcut-ref="dbLog"/>-->
+            <!--<aop:before method="beforeHandler" pointcut-ref="dbLog"/>-->
+            <!--<aop:around method="doAround" pointcut-ref="dbLog"/>-->
+        <!--</aop:aspect>-->
+        <!--<aop:aspect id="jdbcTempleAspect" ref="logAspect">-->
+            <!--<aop:pointcut id="jdbcLog" expression="execution(* org.springframework.jdbc.core.JdbcTemplate.*(..))"/>-->
+            <!--<aop:around method="doAround" pointcut-ref="jdbcLog"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+    <context:property-placeholder location="/WEB-INF/property/jdbc.properties"/>
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.passwd}"/>
+    </bean>
+</beans>

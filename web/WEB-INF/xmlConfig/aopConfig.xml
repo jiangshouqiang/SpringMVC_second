@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+    <!--<aop:aspectj-autoproxy proxy-target-class="true"/>-->
+    <bean id="logAspect" class="com.gr.jiang.common.spring.aspect.LogAspect"/>
+    <aop:config>
+        <aop:aspect id="dbLogAspect" ref="logAspect">
+            <aop:pointcut id="dbLog" expression="execution(* com.gr.jiang.dao.impl.*.*(..))"/>
+            <aop:after method="afterHandler" pointcut-ref="dbLog"/>
+            <aop:before method="beforeHandler" pointcut-ref="dbLog"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
